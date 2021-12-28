@@ -1,0 +1,1 @@
+let Fs=require("fire-fs"),Path=require("fire-path");const OutPut=Editor.require("packages://hot-update-tools/core/OutPut.js");module.exports={manifestResDir:null,getLocalIP(){let e="",r=require("os").networkInterfaces();return Object.keys(r).forEach(t=>{r[t].forEach(r=>{"IPv4"===r.family&&!1===r.internal&&(e=r.address)})}),e}};

@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "5071e683-e069-472e-aea0-8eb4b32af14b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 90,
+  "height": 88,
+  "platformSettings": {},
+  "subMetas": {
+    "ui_main_icon_bangpaisheshi": {
+      "ver": "1.0.4",
+      "uuid": "575e5b40-5f6b-422f-a239-8769d3dc96e4",
+      "rawTextureUuid": "5071e683-e069-472e-aea0-8eb4b32af14b",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 90,
+      "height": 88,
+      "rawWidth": 90,
+      "rawHeight": 88,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

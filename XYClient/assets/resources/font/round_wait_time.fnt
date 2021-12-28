@@ -1,0 +1,14 @@
+info face="隶书" size=32 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=2 padding=0,0,0,0 spacing=0,0 outline=2
+common lineHeight=32 base=28 scaleW=256 scaleH=256 pages=1 packed=1 alphaChnl=2 redChnl=0 greenChnl=2 blueChnl=2
+page id=0 file="round_wait_time_0.png"
+chars count=10
+char id=48   x=0     y=0     width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=49   x=58    y=0     width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=50   x=116   y=0     width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=51   x=174   y=0     width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=52   x=0     y=66    width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=53   x=58    y=66    width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=54   x=116   y=66    width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=55   x=174   y=66    width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=56   x=0     y=132   width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15
+char id=57   x=58    y=132   width=58    height=66    xoffset=0     yoffset=0     xadvance=58    page=0  chnl=15

@@ -1,0 +1,1 @@
+module.exports={upload(){let e=new OSS({region:"oss-cn-beijing",accessKeyId:"LTAIOxxDqJpJbzfy",accessKeySecret:"kZRbbX3nNtxWlx5XWsR8uRrJzj4X5C",bucket:"happycars"});CO(function*(){e.useBucket("happycars"),yield function*(c){let s=yield e.list({prefix:c,delimiter:"/"});s.prefixes.forEach(e=>{}),s.objects.forEach(e=>{})}("hot")}).catch(e=>{})}};

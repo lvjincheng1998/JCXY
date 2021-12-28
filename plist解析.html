@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <input multiple="" type="file">
+    </body>
+    <script src="HTTP.js"></script>
+    <script>
+        var debug = false;
+        var targetImg = null;
+        var targetXML = null;
+        if (debug) {
+            targetImg = new Image();
+            targetImg.src = "ui_hongbao.png";
+            targetImg.onload = () => {
+                JC.HTTP.request({
+                    url: "http://127.0.0.1/s/ui_hongbao.plist",
+                    success: (text) => {
+                        parseXML(new DOMParser().parseFromString(text, "text/xml"));
+                    }
+                });   
+            }
+        }
+        function parseXML(xmlDoc) {
+            let rootDict = xmlDoc.children[0].children[0];
+            let framesDict = rootDict.children[1];
+            let metadataDict = rootDict.children[3];
+            let atlasSize = toArray(getValueByKey("size", metadataDict));
+            let imgNames = listImgNames(framesDict);
+            let outputDatas = [];
+            for (let imgName of imgNames) {
+                let imgDict = getValueByKey(imgName, framesDict);
+                let frameInfo = toArray(getValueByKey("frame", imgDict));
+                let offset = frameInfo[0];
+                let size = frameInfo[1];
+                let rectInfo = toArray(getValueByKey("sourceColorRect", imgDict));
+                let rectOffset = rectInfo[0];
+                let rectSize = rectInfo[1];
+                let sourceSize = toArray(getValueByKey("sourceSize", imgDict));
+                let rotated = getValueByKey("rotated", imgDict);
+                // if (imgName == "ui_hongbao_hongbao_end.png") {
+                    let canvas = document.createElement("canvas");
+                    let ctx = canvas.getContext("2d");
+                    canvas.width = size[rotated? 1 : 0];
+                    canvas.height = size[rotated? 0 : 1];
+                    if (debug) ctx.fillStyle = "rgba(0,0,0,1)";
+                    // else ctx.fillStyle = "rgba(0,0,0,0)";
+                    if (debug) ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(targetImg, -offset[0], -offset[1]);
+                    if (debug) document.body.appendChild(canvas);
+                    
+                    if (debug) document.body.appendChild(document.createElement("div"));
+
+                    let canvas1 = document.createElement("canvas");
+                    let ctx1 = canvas1.getContext("2d");
+                    canvas1.width = rectSize[0];
+                    canvas1.height = rectSize[1];
+                    if (debug) ctx1.fillStyle = "rgba(0,0,0,1)";
+                    // else ctx1.fillStyle = "rgba(0,0,0,0)";
+                    if (debug) ctx1.fillRect(0, 0, canvas1.width, canvas1.height);
+                    convertCanvasToImage(canvas, (e) => {
+                        let img = e.path[0];
+                        if (rotated) {
+                            ctx1.translate(0, rectSize[1]);
+                            ctx1.rotate(-Math.PI / 2);
+                        }
+                        ctx1.drawImage(img, 0, 0);
+                        if (debug) document.body.appendChild(canvas1);
+                        else {
+                            outputDatas.push({name: imgName, data: canvas1.toDataURL("image/png")});
+                            if (outputDatas.length == imgNames.length) downloadByArray(outputDatas);
+                        }
+                    });
+                //     return;
+                // }
+            }
+        }
+        function getValueByKey(keyName, dictTag) {
+            for (let i = 0; i < dictTag.childElementCount; i++) {
+                let tag = dictTag.children[i];
+                if (tag.tagName == "key" && keyName == tag.textContent) {
+                    tag = dictTag.children[i + 1];
+                    if (tag.tagName == "string") return tag.textContent;
+                    if (tag.tagName == "dict") return tag;
+                    if (tag.tagName == "true") return true;
+                    if (tag.tagName == "false") return false;
+                }
+            }
+        }
+        function listImgNames(dictTag) {
+            let imgNames = [];
+            for (let i = 0; i < dictTag.childElementCount; i++) {
+                let tag = dictTag.children[i];
+                if (tag.tagName == "key") {
+                    imgNames.push(tag.textContent);
+                }
+            }
+            return imgNames;
+        }
+        function toArray(str) {
+            return JSON.parse(str.replaceAll('{', '[').replaceAll('}', ']'));
+        }
+        function convertCanvasToImage(canvas, onload){
+            var image = new Image();
+            image.src = canvas.toDataURL("image/png");
+            image.onload = onload;
+            return image;
+        }
+        function downloadByArray(outputDatas) {
+            let timeIndex = 0;
+            for (let o of outputDatas) {
+                setTimeout(() => {
+                    download(o.name, o.data)
+                }, timeIndex * 300);
+                timeIndex++;
+            }
+        }
+        function download(name, base64Data) {
+            let a = document.createElement("a");
+            a.href = base64Data;
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+        function output() {
+            if (targetImg == null || targetXML == null) return;
+            parseXML(targetXML);
+        }
+        let input = document.querySelector("input");
+        input.onchange = () => {
+            targetImg = null;
+            targetXML = null;
+            for (let file of input.files) {
+                if (file.type == "image/png") {
+                    let img = new Image();
+                    img.src = URL.createObjectURL(file);
+                    img.onload = () => {
+                        targetImg = img;
+                        output();
+                    }
+                } 
+                if (file.name.endsWith(".plist")) {
+                    let reader = new FileReader();
+                    reader.onload = () => {
+                        targetXML = new DOMParser().parseFromString(reader.result, "text/xml");
+                        output();
+                    }
+                    reader.readAsText(file);
+                }
+            }
+        };
+    </script>
+</html>
